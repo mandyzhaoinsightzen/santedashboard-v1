@@ -30,8 +30,8 @@ export default {
                 password: '',
             },
             userInfo:[{
-               account: '1',
-                password: '1',}
+               account: 'user',
+                password: 'user',}
             ],
             loginRules: {
               userName:[{

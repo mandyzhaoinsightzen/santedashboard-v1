@@ -20,12 +20,12 @@
               </router-link>
              </li>
              <li>
-                <router-link to="/login" exact tag="li" activeClass="active">
+                <router-link to="/organization" exact tag="li" activeClass="active">
 						     <a>Org Manage</a>
 					    	</router-link>
             </li>
              <li>
-                <router-link to="/" exact tag="li" activeClass="active">
+                <router-link to="/user" exact tag="li" activeClass="active">
 						     <a>Accunt Manage</a>
 						    </router-link>
              </li>
@@ -71,11 +71,11 @@ export default {
 }
 </script>
 <style scoped>
-#header{background: #f3f3f3;}
+#header{background: rgb(6, 41, 140);}
 #header .container{width:80%;margin:0 auto;}
 
 #header .nav-left{text-align: left;float: left; margin: 25px 0px 0px 30px;}
-#header .nav-left h3{color:#333333;font-weight: bold;font-family: 'Microsoft YaHei';font-size:20px;line-height:26px;}
+#header .nav-left h3{color:#fff;font-weight: bold;font-family: 'Microsoft YaHei';font-size:20px;line-height:26px;}
 #header .nav-left a{display: inline-flex;text-decoration: none;}
 #header .nav-right{float:right;display: flex;}
 #header .nav-right .nav-list{
@@ -89,18 +89,18 @@ margin-right:45px;
     display: inline-block;
     font-size: 16px;
     padding: 30px 15px 20px 15px;
-    color: #333333;
+    color: #fff;
     text-decoration: none;
 }
 #header .nav-right .nav-list a:hover{
 	color: #2aa9de;
-  background: #d4f2f4;
+  background: #fff;
   padding: 30px 15px 17px 15px;
   border-bottom:3px solid #2aa9de
 }
 #header .nav-right .btn-login{
   margin: 30px 30px 0px 0px;
-  font-size: 16px;
+  font-size: 16px;color: #fff
 }
-#header .nav-right .btn-login span{color: #2aa9de}
+#header .nav-right .btn-login a,span{color: #fff}
 </style>
