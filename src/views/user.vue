@@ -1,6 +1,6 @@
 <template>
-    <div style='overflow: hidden;' class="container">
-        <div style="margin:50px 0px 0px 0px"> 
+    <div class="container">
+        <div class="user"> 
            <v-row>
                 <v-col span="8">
                    <v-input placeholder="name" v-model="value"  @blur="blur('blur')"></v-input>
@@ -13,7 +13,7 @@
                 </v-col>
           </v-row>
         </div>
-        <v-data-table :data='loadData' :columns='columns' class="dataTable"></v-data-table>
+         <v-data-table :data='loadData' :columns='columns' class="dataTable"></v-data-table>
     </div>
 </template>
 <script>
@@ -21,6 +21,7 @@
     export default {
         data: function () {
             return {
+                value:'',
                 loadData(pramas) {
                     return axios.get("static/datatable.json",pramas).then(res =>{
                         return res.data;
@@ -47,6 +48,11 @@
     margin: 0 auto;
     width: 80%;
     display: block;
+  
 }
-.dataTable{margin:30px auto;width: 80%;position: absolute;height: 300px;}
+.user{
+    position: inherit;
+    padding-top: 15%;
+}
+.dataTable{margin:30px auto;width: 80%;height: 300px;}
 </style>

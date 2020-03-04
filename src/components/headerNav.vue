@@ -1,106 +1,263 @@
 <template>
-  <div id="header">
-    <div class="container">
-      <v-col span="10">
-        <div class="nav-left">
-          <a href="javascript:;">
-            <!-- <img src="../assets/img/logo.png" height="60px"> -->
-            <h3 class="nav-logo"> 
-              Sante Admin Portal
-            </h3>
-          </a>
-        </div>
-      </v-col>
-      <v-col span="14">
-       <div class="nav-right">
-          <ul class="nav-list">
-             <li>
-               <router-link to="/index" exact tag="li" activeClass="active">
-                <a>Home</a>
-              </router-link>
-             </li>
-             <li>
-                <router-link to="/organization" exact tag="li" activeClass="active">
-						     <a>Org Manage</a>
-					    	</router-link>
-            </li>
-             <li>
-                <router-link to="/user" exact tag="li" activeClass="active">
-						     <a>Accunt Manage</a>
-						    </router-link>
-             </li>
-          </ul>
-          <div class="btn-login">
-             <router-link to="/login">Logout</router-link>
-          </div>
-         
-            <!-- <ul class="nav-aside">
-              <li class="nav-user" v-show="userShow">
-              <router-link to="/account">个人中心</router-link>
-                <div class="nav-user-wrapper">
-                  <div class="nav-user-list">
-                    <dl class="nav-user-avatar">
-                      <dd><span class="ng-scope"></span></dd>
-                      <dt class="ng-binding">{{  }}</dt>
-                    </dl>
-                    <ul>
-                    <li  class="logout"><a href="javascript:;">退出</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <router-link to="/login" v-show="show">
-                <button style="color: #d0d0d0 ">登录</button>
-              </router-link>
-			    	</ul> -->
-       </div>
-      </v-col>
-     
-    
-    </div>
-  </div>
+	<v-row class="container">
+		<v-col :span="6" class="header">
+			<div class="header-logo">
+			 <img src="../assets/images/InsightZen-Logo.png" height="32px;"><span class="main-title">{{$t('language.dashborad')}}</span>
+			</div>
+		</v-col>
+		<v-col :span="18" class="header">
+		  <v-row>
+			 <v-col :span="20">
+				<div class="nav-right">
+					<ul class="nav-list">
+						<li>
+						<router-link to="/index" exact tag="li" activeClass="active">
+							<a>Home</a>
+						</router-link>
+						</li>
+						<li>
+							<router-link to="/organization" exact tag="li" activeClass="active">
+										<a>Org Manage</a>
+										</router-link>
+						</li>
+						<li>
+							<router-link to="/user" exact tag="li" activeClass="active">
+										<a>Accunt Manage</a>
+										</router-link>
+						</li>
+					</ul>
+				</div>
+			 </v-col>
+			 <!-- <v-col :span="4">
+				<div class="btn-login">
+						<router-link to="/login">Logout</router-link>
+				</div>
+ 			</v-col> -->
+			<v-col :span="4" class="userinfo">
+					<!-- <v-row>
+						<span>
+							<v-button @click.native.prevent="btnVoucher"  class="voucher">{{$t('loginpage.vouchercodes')}}</v-button>
+						</span>
+					</v-row> -->
+					<el-dropdown trigger="hover" :data="langData" >
+							<span class="el-dropdown-link" style="display: inline-flex;align-items: baseline;"> 
+								<img  height="12px"  class="imgswitch" :src="imgurl" />
+								<!--src="./../assets/images/english.png" :src="getThumb?enlogourl:chlogourl" :src="$t('homecontent.enlogourl')"-->
+								<span >{{$t('language.name')}}</span><img src="../assets/images/up.png" height="10px;" width="15px">
+							</span>
+							<el-dropdown-menu slot="dropdown" class="drp-show" @click.native="changeLangEvent">
+							<el-dropdown-item>zh</el-dropdown-item>
+							<el-dropdown-item>en</el-dropdown-item>
+						  </el-dropdown-menu>
+					</el-dropdown>
+						
+					<el-dropdown trigger="hover" class="el-dropdown-item"> 
+						<span class="el-dropdown-link userinfo-down" style="display: inline-flex;"> 
+								<img src="./../assets/images/userlogin.png"  height="35px" style="margin-top:20px"/>
+								<span >	{{sysUserName}}</span>
+								<img  src="../assets/images/up.png" height="10px;" width="15px" style="margin-top: 35px;">
+						</span>
+						
+						<el-dropdown-menu slot="dropdown" class="drp-show">
+							<!-- <v-dropdown-item>我的消息</v-dropdown-item>
+							<v-dropdown-item>设置</v-dropdown-item> -->
+							<el-dropdown-item divided @click.native="logout">{{$t("commonoperation.logout")}}</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+			  </v-col>
+			</v-row>
+		</v-col>
+		<v-col :span="24" class="main">
+			<section class="content-container">
+				<div class="grid-content bg-purple-light">
+					<v-col :span="24" class="content-wrapper">
+						<transition name="fade" mode="out-in">
+							<router-view></router-view>
+						</transition>
+					</v-col>
+				</div>
+			</section>
+		</v-col>
+	</v-row>
 </template>
-<script>
-export default {
-  name:'headerNav',
-  data(){
-    return {
-              userShow: false,
-         }
-  }
-}
-</script>
-<style scoped>
-#header{background: rgb(6, 41, 140);}
-#header .container{width:80%;margin:0 auto;}
 
-#header .nav-left{text-align: left;float: left; margin: 25px 0px 0px 30px;}
-#header .nav-left h3{color:#fff;font-weight: bold;font-family: 'Microsoft YaHei';font-size:20px;line-height:26px;}
-#header .nav-left a{display: inline-flex;text-decoration: none;}
-#header .nav-right{float:right;display: flex;}
-#header .nav-right .nav-list{
-margin-right:45px;
+<script>
+	// import Pagination from '@/components/Pagination'
+	export default {
+		components: {
+		  // Pagination
+		},
+		data() {
+			return {
+				collapsed:false,
+				sysUserName: '',
+				sysUserAvatar: '',
+				imgurl:require('./../assets/images/english.png'),
+				showFormVisible: false, //控制编辑页面显示与隐藏
+				listData:[],
+				  formInline: {
+					page: 1,
+					limit: 10,
+					varLable: '',
+					varName: '',
+				},
+				// 分页参数
+				pageparm: {
+					currentPage: 1,
+					pageSize: 10,
+					total: 10
+				},
+				form: {
+					name: '',
+					region: '',
+					date1: '',
+					date2: '',
+					delivery: false,
+					type: [],
+					resource: '',
+					desc: ''
+				}
+			}
+		},
+		methods: {
+			// 分页插件事件
+			callFather(parm) {
+			this.formInline.page = parm.currentPage
+			this.formInline.limit = parm.pageSize
+			this.getdata(this.formInline)
+			},
+			btnVoucher(){
+				this.showFormVisible=true;
+			},
+			changeLangEvent() {
+				if (this.lang === "zh") {
+					this.lang = "en";
+					this.$i18n.locale = this.lang; //关键语句
+					this.imgurl=require('./../assets/images/english.png');
+				} else {
+					this.lang = "zh";
+					this.$i18n.locale = this.lang; //关键语句
+					this.imgurl=require('./../assets/images/chinaflag.png');
+				}
+			},
+			//退出登录
+			logout: function () {
+				var _this = this;
+				this.$confirm('确认退出吗?', '提示', {
+					//type: 'warning'
+				}).then(() => {
+					sessionStorage.removeItem('user');
+					_this.$router.push('/login');
+				}).catch(() => {
+
+				});
+
+			},
+			//折叠导航栏
+			collapse:function(){
+				this.collapsed=!this.collapsed;
+			},
+			showMenu(i,status){
+				this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-'+i)[0].style.display=status?'block':'none';
+			},
+			handleCurrentChange(val) {
+			this.currentPage = val;
+			console.log(`crrent: ${val}`);
+		   },
+			// 关闭编辑、增加弹出框
+			closeDialog() {
+				this.showFormVisible = false
+			}
+		},
+		mounted() {
+			var user = sessionStorage.getItem('user');
+			if (user) {
+				user = JSON.parse(user);
+				this.sysUserName = user[0].name || '';
+				this.sysUserAvatar = user.avatar || '';
+			}
+		   this.listData=[
+			  {
+              Code: "test",
+              Status: 1,
+              Send: true,
+            },
+		   ]
+		
+		}
+	}
+
+</script>
+
+<style scoped lang="scss">
+#app{ font-family: Arial, Helvetica, sans-serif;}
+.main-title{text-align: left;}
+.container {
+		background: #F9F9F9;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		width: 100%;}
+.container .header {
+			height: 110px;
+			line-height: 110px;
+			background: #153a8b;
+			border-bottom: 2px solid #e2dede;
+			color:#666;
+      
+      }
+.container .header .header-logo	span{font-weight: bold;font-size: 24px;margin-left:30px;color:#fff}
+.container .header .header-logo		img{float: left;margin: 40px 0px 0px 50px;}
+			
+.container .header	.userinfo {
+				text-align: right;
+				padding-right: 35px;
+				float: right;
+				display: inline-flex;}
+.container .header	.userinfo   .userinfo-down{
+					font-size:14px;padding-top: 15px;
+				}
+.container .header	.userinfo 	.el-dropdown-link{
+					img{margin:0px 3px}
+					// span{margin:0px 3px}
+				}
+.container .header	.userinfo 	.el-dropdown-link span{color:#fff}
+.container .header	.userinfo .userinfo-inner {
+					cursor: pointer;
+					color:#666}
+.container .header	.userinfo .userinfo-inner img {
+						width: 40px;
+						height: 40px;
+						border-radius: 20px;
+						margin: 10px 0px 10px 10px;
+						float: right;
+					}
+.container .header	.userinfo .userinfo-inner   span{font-weight: bold;font-size:24px;margin-left:20px;color:rgb(240, 233, 233)}
+
+.header .nav-right{    margin: 0 auto;
+    display: table;}
+.header .nav-right .nav-list{
+  margin-top:0px;
 }
-#header .nav-right .nav-list li{
+.header .nav-right .nav-list li{
   float: left;
   list-style:none;
   }
-#header .nav-right  .nav-list a{
-    display: inline-block;
-    font-size: 16px;
-    padding: 30px 15px 20px 15px;
+.header .nav-right  .nav-list a{
+    font-size: 18px;
+    padding: 15px;
     color: #fff;
     text-decoration: none;
 }
-#header .nav-right .nav-list a:hover{
-	color: #2aa9de;
-  background: #fff;
-  padding: 30px 15px 17px 15px;
-  border-bottom:3px solid #2aa9de
+.header .nav-right .nav-list a:hover{
+   	color: #2aa9de;
+    background: #fff;
+    padding:13px  15px;
+    border-bottom:3px solid #2aa9de
 }
-#header .nav-right .btn-login{
+.header .nav-right .btn-login{
   margin: 30px 30px 0px 0px;
   font-size: 16px;color: #fff
 }
-#header .nav-right .btn-login a,span{color: #fff}
+.header .nav-right .btn-login a{color: #fff}
 </style>

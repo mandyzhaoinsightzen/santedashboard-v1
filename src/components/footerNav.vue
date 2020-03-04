@@ -1,9 +1,9 @@
 <template>
     <div class="footer" id="footer">
       <div class="container">
-        <div class="siteinfo">
+        <!-- <div class="siteinfo">
           <img src="../assets/img/qrcode.png">
-        </div>
+        </div> -->
         <hr>
         <div class="copyright">
           <h4>Copyright©2020 All rights reserved</h4>
