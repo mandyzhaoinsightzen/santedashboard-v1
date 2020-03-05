@@ -38,8 +38,8 @@
 						<span>
 							<v-button @click.native.prevent="btnVoucher"  class="voucher">{{$t('loginpage.vouchercodes')}}</v-button>
 						</span>
-					</v-row> -->
-					<el-dropdown trigger="hover" :data="langData" >
+					</v-row>  :data="langData"-->
+					<el-dropdown trigger="hover" >
 							<span class="el-dropdown-link" style="display: inline-flex;align-items: baseline;"> 
 								<img  height="12px"  class="imgswitch" :src="imgurl" />
 								<!--src="./../assets/images/english.png" :src="getThumb?enlogourl:chlogourl" :src="$t('homecontent.enlogourl')"-->

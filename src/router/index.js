@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/views/index'
+import home from '@/views/home'
 import login from '@/views/login'
 import organization from '@/views/organization'
 import user from '@/views/user'

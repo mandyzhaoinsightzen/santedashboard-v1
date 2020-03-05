@@ -2,7 +2,8 @@ module.exports = {
   language: {
     name: "English",
     current: "Current Language",
-    dashborad:"Sante Admin Portal",
+    dashborad:"Sante Dashboard",
+    // dashborad:"Sante Admin Portal",
   },
   loginpage:{
     welcome:"Welcome",

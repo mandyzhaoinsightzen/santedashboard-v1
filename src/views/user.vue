@@ -5,11 +5,11 @@
                 <v-col span="8">
                    <v-input placeholder="name" v-model="value"  @blur="blur('blur')"></v-input>
                 </v-col>
-                 <v-col span="8">
-                  <v-input placeholder="name" v-model="value"  @blur="blur('blur')"></v-input>
-                    </v-col>
+                 <!-- <v-col span="8">
+                    <v-input placeholder="name" v-model="value"  @blur="blur('blur')"></v-input>
+                </v-col> -->
                 <v-col span="8">
-                     <v-button type="primary" size="large">Large</v-button>
+                     <v-button type="primary" size="large">Search</v-button>
                 </v-col>
           </v-row>
         </div>

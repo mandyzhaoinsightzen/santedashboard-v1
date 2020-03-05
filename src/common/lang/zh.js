@@ -2,7 +2,7 @@ module.exports = {
   language: {
     name: "中文",
     current: "当前语言",
-    dashborad:"管理员平台",
+    dashborad:"管理平台",
   
   },
   homecontent: {
@@ -24,7 +24,7 @@ module.exports = {
   loginpage:{
     welcome:"欢迎你",
     logincontinue:"继续登录",
-    name:"账号:",
+    account:"账号:",
     password:"密码:",
     login:"登录",
     copyright:"版权所有©2019 InsightZen保留所有权利.",
