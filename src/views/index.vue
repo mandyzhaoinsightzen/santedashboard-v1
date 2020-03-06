@@ -36,8 +36,16 @@
     <div class="line-st">
       <p class="line"></p>
     </div>
-    <div class="score-dist">
-       <div id="myRiskDeshBoard"></div>
+    <h3 class="title-size">{{$t("homecontent.scoredistribution")}}</h3>
+    <div class="score-dist pie-main">
+      <div class="pie-region-two">
+           <h4>{{$t("homecontent.generalhealth")}}</h4>
+           <div id="risk-chart"  class="chart-w-h"></div>
+      </div>
+       <div class="pie-region-two">
+           <h4>{{$t("homecontent.digestion")}}</h4>
+           <div id="digestion-chart"  class="chart-w-h"></div>
+       </div>
     </div>
     <div class="all-patients">
       <div class="paddingtopbottm20">
@@ -288,13 +296,35 @@ export default {
       //https://gallery.echartsjs.com/editor.html?c=x7J3ZPveNK
       var riskchart = echarts.init(document.getElementById("risk-chart"));
       var nameData = ["Low", "Medium", "High", "Severe"];
-      var dataValue = [data.low, data.moderate, data.high, data.severe];
-      var total = data.low + data.moderate + data.high + data.severe;
-      var dataPoint = [
-        this.percentageCalculate(data.low, total),
-        this.percentageCalculate(data.moderate, total),
-        this.percentageCalculate(data.high, total),
-        this.percentageCalculate(data.severe, total)
+      // var dataValue = [data.low, data.moderate, data.high, data.severe];
+      // var total = data.low + data.moderate + data.high + data.severe;
+      // var dataPoint = [
+      //   this.percentageCalculate(data.low, total),
+      //   this.percentageCalculate(data.moderate, total),
+      //   this.percentageCalculate(data.high, total),
+      //   this.percentageCalculate(data.severe, total)
+      // ];
+      //声明数据
+      var chartData = [{
+              name: 'severe Risk',
+              value: 50,
+              test: '备注1' //自定义参数
+          },
+          {
+              name: 'High',
+              value: 60,
+              test: '备注2'
+          },
+          {
+              name: 'Medium',
+              value: 66,
+              test: '备注3'
+          },
+          {
+              name: 'Low',
+              value: 72,
+              test: '备注4'
+          },
       ];
       var myColor = ["#50E3C2", "#E2B557", "#DD9E61", "#CC564C"];
       var option = {
@@ -310,10 +340,6 @@ export default {
           {
             show: true,
             data: nameData,
-            inverse: true,
-            axisLine: {
-              show: false
-            },
             splitLine: {
               show: false
             },
@@ -340,7 +366,18 @@ export default {
           {
             show: true,
             inverse: true,
-            data: dataValue,
+            data: (function(data) {
+            var arr = [];
+            data.forEach(function(items) {
+                arr.push(items.name);
+            });
+                return arr;
+            })(chartData), // 载入y轴数据
+                inverse: true,
+            axisLine: {
+              show: false
+            },
+            // data: dataValue,
             axisLabel: {
               textStyle: {
                 // color: function(value, index) {
@@ -368,7 +405,8 @@ export default {
             type: "bar",
             yAxisIndex: 0,
             barGap: "-100%",
-            data: dataPoint,
+            data:chartData,
+            // data: dataPoint,
             barWidth: 30,
             itemStyle: {
               normal: {
@@ -390,100 +428,55 @@ export default {
       };
 
       riskchart.setOption(option);
-    },showRiskDeshBoard(value){
-    var mychart = document.getElementById('myRiskDeshBoard');
+    },
+    showDigestionChart(value){
+    var mychart = document.getElementById('digestion-chart');
     var gChart = echarts.init(mychart);
-    var option1 = {
-        tooltip : {
-            formatter: "{a} <br/>{c} {b}"
-        },
-        toolbox: {
-            show: true,
+    var option = {
+          title : {
+              // text: '居民消费价格指数(上年=100)',
+              subtext: 'Digestion',
+          },
+          toolbox: {
             feature: {
-                restore: {show: true},
-                saveAsImage: {show: true}
-            }
-        },
-        series : [
-            {
-                name: '',
-                type: 'gauge',
-                z: 5,
-                min: 0,
-                max: 100,
-
-                radius: '70%',
-                axisLine: {            // 坐标轴线
-                    lineStyle: {       // 属性lineStyle控制线条样式
-                        width: 10
-                    }
-                },
-                axisTick: {            // 坐标轴小标记
-                    length: 15,        // 属性length控制线长
-                    lineStyle: {       // 属性lineStyle控制线条样式
-                        color: 'auto'
-                    }
-                },
-                splitLine: {           // 分隔线
-                    length: 15,         // 属性length控制线长
-                    lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
-                        color: 'auto'
-                    }
-                },
-                axisLabel: {
-                    backgroundColor: 'auto',
-                    borderRadius: 2,
-                    color: '#eee',
-                    padding: 3,
-                    textShadowBlur: 2,
-                    textShadowOffsetX: 1,
-                    textShadowOffsetY: 1,
-                    textShadowColor: '#222'
-                },
-                title : {
-                    // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    fontWeight: 'bolder',
-                    fontSize: 14,
-                    fontStyle: 'italic'
-                },
-
-                /*detail : {
-                    // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-                    /!*formatter: function (value) {
-                        value = (value + '').split('.');
-                        value.length < 2 && (value.push('00'));
-                        return ('00' + value[0]).slice(-2)
-                            + '.' + (value[1] + '00').slice(0, 2);
-                    },*!/
-                    fontWeight: 'bolder',
-                    borderRadius: 3,
-                    backgroundColor: '#444',
-                    borderColor: '#aaa',
-                    shadowBlur: 5,
-                    shadowColor: '#333',
-                    shadowOffsetX: 0,
-                    shadowOffsetY: 3,
-                    borderWidth: 2,
-                    textBorderColor: '#000',
-                    textBorderWidth: 2,
-                    textShadowBlur: 2,
-                    textShadowColor: '#fff',
-                    textShadowOffsetX: 0,
-                    textShadowOffsetY: 0,
-                    fontFamily: 'Arial',
-                    width: 100,
-                    color: '#eee',
-                    rich: {}
-                },*/
-                data:[{value: 0, name: ''}]
-            },
-
-        ]
-    };
-    option1.series[0].data[0].value = value - 0;
-    gChart.setOption(option1, true);
-}
-
+                  saveAsImage: {show: true}
+              }
+          },
+          tooltip : {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+              orient: 'vertical',
+              top:'center',
+              left: 20,
+              data: ['2018','2017','2016','2015','2014']
+          },
+          series : [
+              {
+                  name: '居民消费价格指数(上年=100)',
+                  type: 'pie',
+                  radius : '60%',
+                  center: ['50%', '50%'],
+                  data:[
+                      {value:102.1, name:'2018'},
+                      {value:101.6, name:'2017'},
+                      {value:102, name:'2016'},
+                      {value:101.4, name:'2015'},
+                      {value:102, name:'2014'}
+                  ],
+                  itemStyle: {
+                      emphasis: {
+                          shadowBlur: 10,
+                          shadowOffsetX: 0,
+                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      }
+                  }
+              }
+          ]
+      };
+     gChart.setOption(option, true);
+     }
   },
   mounted: function() {
     //Patient Stats
@@ -491,6 +484,8 @@ export default {
     this.drawGenderChart();
     this.drawAgeChart();
     this.drawAssChart();
+    this.riskChart();
+    this.showDigestionChart();
     // getChartData().then(res => {
     // var data = res.response;
     // var ageDistribution = data.ageDistribution;
@@ -611,12 +606,21 @@ export default {
   margin: 3px 5px;
   float: left;
 }
+.pie-region-two {
+  width: 50%;
+  margin: 30px;
+}
+.pie-region-two h4 {
+  margin: 10px 0px 20px 0px;
+  font-size: 16px;
+}
 .pie-region {
   width: 30%;
   margin: 30px;
 }
 .pie-region h4 {
   margin: 10px 0px 20px 0px;
+  font-size: 16px;
 }
 .pie-main {
   width: 100%;
