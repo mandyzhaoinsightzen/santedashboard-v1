@@ -19,6 +19,8 @@ module.exports = {
     patientstats:"Patient Stats",
     totalnumberpt:"Total Number of Patients:",
     totalnumberast:"Total Number of Assessments:",
+    regionaldistribution:"Regional Distribution", 
+    patientdistribution:"Patient Distribution",
     genderdistribtn:"Gender Distribution",
     agedistribtn:"Age Distribution",
     assessmentdistribtn:"Assessment Distribution",

@@ -9,6 +9,8 @@ module.exports = {
     patientstats:"病患状态",
     totalnumberpt:"患病总人数:",
     totalnumberast:"评估总人数:",
+    regionaldistribution:"区域分布", 
+    patientdistribution:"患者分布",
     genderdistribtn:"男女比例",
     agedistribtn:"年龄分布",
     assessmentdistribtn:"评估分布",
@@ -16,7 +18,7 @@ module.exports = {
     Males:"男",
     Female:"女",
     asstrend:"评估趋势",
-    allpatients:"病患信息",
+    allpatients:"患者信息",
     riskdis:["Low", "Medium", "High", "Severe"],
     //imgurl:"require('./../assets/images/chinaflag.png')"
     //imgurl:require('./../assets/images/chinaflag.png')

@@ -1,15 +1,15 @@
 <template>
-	<v-row class="container">
-		<v-col :span="6" class="header">
+	<el-row class="container">
+		<el-col :span="6" class="header">
 			<div class="header-logo">
 			 <img src="../assets/images/InsightZen-Logo.png" height="32px;"><span class="main-title">{{$t('language.dashborad')}}</span>
 			</div>
-		</v-col>
-		<v-col :span="18" class="header">
-		  <v-row>
-			 <v-col :span="20">
-				<div class="nav-right">
-					<ul class="nav-list">
+		</el-col>
+		<el-col :span="18" class="header">
+		  <el-row>
+			 <el-col :span="20">
+				<div class="nael-right">
+					<ul class="nael-list">
 						<li>
 						<router-link to="/index" exact tag="li" activeClass="active">
 							<a>Home</a>
@@ -27,18 +27,18 @@
 						</li>
 					</ul>
 				</div>
-			 </v-col>
-			 <!-- <v-col :span="4">
+			 </el-col>
+			 <!-- <el-col :span="4">
 				<div class="btn-login">
 						<router-link to="/login">Logout</router-link>
 				</div>
- 			</v-col> -->
-			<v-col :span="4" class="userinfo">
-					<!-- <v-row>
+ 			</el-col> -->
+			<el-col :span="4" class="userinfo">
+					<!-- <el-row>
 						<span>
-							<v-button @click.native.prevent="btnVoucher"  class="voucher">{{$t('loginpage.vouchercodes')}}</v-button>
+							<el-button @click.native.prevent="btnVoucher"  class="voucher">{{$t('loginpage.vouchercodes')}}</el-button>
 						</span>
-					</v-row>  :data="langData"-->
+					</el-row>  :data="langData"-->
 					<el-dropdown trigger="hover" >
 							<span class="el-dropdown-link" style="display: inline-flex;align-items: baseline;"> 
 								<img  height="12px"  class="imgswitch" :src="imgurl" />
@@ -57,28 +57,27 @@
 								<span >	{{sysUserName}}</span>
 								<img  src="../assets/images/up.png" height="10px;" width="15px" style="margin-top: 35px;">
 						</span>
-						
 						<el-dropdown-menu slot="dropdown" class="drp-show">
-							<!-- <v-dropdown-item>我的消息</v-dropdown-item>
-							<v-dropdown-item>设置</v-dropdown-item> -->
+							<!-- <el-dropdown-item>我的消息</el-dropdown-item>
+							<el-dropdown-item>设置</el-dropdown-item> -->
 							<el-dropdown-item divided @click.native="logout">{{$t("commonoperation.logout")}}</el-dropdown-item>
 						</el-dropdown-menu>
 					</el-dropdown>
-			  </v-col>
-			</v-row>
-		</v-col>
-		<v-col :span="24" class="main">
+			  </el-col>
+			</el-row>
+		</el-col>
+		<el-col :span="24" class="main">
 			<section class="content-container">
 				<div class="grid-content bg-purple-light">
-					<v-col :span="24" class="content-wrapper">
+					<el-col :span="24" class="content-wrapper">
 						<transition name="fade" mode="out-in">
 							<router-view></router-view>
 						</transition>
-					</v-col>
+					</el-col>
 				</div>
 			</section>
-		</v-col>
-	</v-row>
+		</el-col>
+	</el-row>
 </template>
 
 <script>
@@ -195,9 +194,8 @@
 .container {
 		background: #F9F9F9;
 		position: absolute;
-		top: 0px;
-		bottom: 0px;
-		width: 100%;}
+		width: 100%;
+		}
 .container .header {
 			height: 110px;
 			line-height: 110px;
@@ -234,30 +232,30 @@
 					}
 .container .header	.userinfo .userinfo-inner   span{font-weight: bold;font-size:24px;margin-left:20px;color:rgb(240, 233, 233)}
 
-.header .nav-right{    margin: 0 auto;
+.header .nael-right{    margin: 0 auto;
     display: table;}
-.header .nav-right .nav-list{
+.header .nael-right .nael-list{
   margin-top:0px;
 }
-.header .nav-right .nav-list li{
+.header .nael-right .nael-list li{
   float: left;
   list-style:none;
   }
-.header .nav-right  .nav-list a{
+.header .nael-right  .nael-list a{
     font-size: 18px;
     padding: 15px;
     color: #fff;
     text-decoration: none;
 }
-.header .nav-right .nav-list a:hover{
+.header .nael-right .nael-list a:hover{
    	color: #2aa9de;
     background: #fff;
     padding:13px  15px;
     border-bottom:3px solid #2aa9de
 }
-.header .nav-right .btn-login{
+.header .nael-right .btn-login{
   margin: 30px 30px 0px 0px;
   font-size: 16px;color: #fff
 }
-.header .nav-right .btn-login a{color: #fff}
+.header .nael-right .btn-login a{color: #fff}
 </style>

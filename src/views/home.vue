@@ -1,6 +1,20 @@
 <template>
-<div>
+<div class="container">
+  <div class="main"> 
     <el-row class="pt-chart">
+       <el-col :span="24" >
+                <el-col :span="6">
+                <h3 class="title-size">{{$t("homecontent.patientstats")}}</h3>
+            </el-col>
+            <el-col :span="18" class="align-right margin-right30">
+                <span class="pt-title">{{$t("homecontent.totalnumberpt")}}</span>
+                <!-- <span class="title-size mg-right50">{{allPatientsNumber}}</span> -->
+                <span class="title-size mg-right50">345345345</span>
+                <span class="pt-title">{{$t("homecontent.totalnumberast")}}</span>
+                <!-- <span class="title-size">{{allPatientsAssessments}}</span> -->
+                <span class="title-size">23423</span>
+            </el-col>
+        </el-col>
        <el-col :span="6">
         <h4>{{$t("homecontent.genderdistribtn")}}</h4>
         <div id="gender-pie-chart" class="chart-w-h"></div>
@@ -9,11 +23,14 @@
         <h4>{{$t("homecontent.agedistribtn")}}</h4>
         <div id="age-pie-chart" class="chart-w-h"></div>
       </el-col>
+      
     </el-row>
+  </div>
 </div>
 
 </template>
 <script>
+// 导入组件
 import echarts from "echarts";
 
 export default {
@@ -23,6 +40,7 @@ export default {
       showtype: false
     }
   },
+  // 注册组件
   components: {
      },
   methods: {
@@ -87,7 +105,11 @@ export default {
                 }
               }
             },
-            data: data
+            // data: data
+            data:[
+                {value:32, name:''},
+                {value:23, name:''},
+            ]
           }
         ]
       };
@@ -153,20 +175,65 @@ export default {
                 }
               }
             },
-            data: data1
+            // data: data1
+            data:[
+                {value:32, name:''},
+                {value:23, name:''},
+                {value:75, name:''},
+                {value:91, name:''},
+            ]
           }
         ]
       };
       agePie.setOption(option);
     },
   },
-  created() {
-    
+  mounted() {
+    debugger;
+    //  var data = res.response;
+    //  var ageDistribution = data.ageDistribution;
+    //  var assessmentDistribution = data.assessmentDistribution;
+    // this.drawGenderChart(genderDistribution);
+    // this.drawAgeChart(data.ageDistribution);
+    this.drawGenderChart();
+    this.drawAgeChart();
   },
  
 }
 </script>
 <style scoped>
-
+.container{
+    text-align: center;
+    overflow: hidden;
+    margin: 0 auto;
+    width: 80%;
+    display: block;
+}
+.container .main{
+    position: absolute;
+    padding-top: 110px;
+}
+.pt-chart {
+  background: #fff;
+  
+}
+.pt-chart h4 {
+    color: rgb(151, 151, 151);
+    text-align: center;
+  }
+  .title-size {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(74, 74, 74);
+    margin: 0px;
+  }
+  .pt-title {
+    font-size: 16px;
+    color: rgb(151, 151, 151);
+  }
+.chart-w-h {
+    width: 100%;
+    height: 350px;
+  }
 </style>
 
