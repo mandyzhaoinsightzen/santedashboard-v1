@@ -24,6 +24,8 @@ module.exports = {
     scoredistribution:'Score Distribution',
     generalhealth:'General Health',
     digestion:'Digestion',
+    mental:'Mental',
+    sleep:'Sleep',
     genderdistribtn:"Gender Distribution",
     agedistribtn:"Age Distribution",
     assessmentdistribtn:"Assessment Distribution",
@@ -50,7 +52,8 @@ module.exports = {
   stressassessments:"Stress Assessments",
   healthyassessments:"Health Assessment",
   healthrisk:"Health Risk(%)",
-  stressrisk:"Stress Risk(%)"
+  stressrisk:"Stress Risk(%)",
+  operation:"Operation"
 },
 vauchercodetable:{
  codes:"Codes",
@@ -61,5 +64,7 @@ vauchercodetable:{
  used:"Used",
  expired:"Expired",
  generate:"Generate New"
+},quesnaireDetails:{
+  overallscore:"总分"
 }
 };

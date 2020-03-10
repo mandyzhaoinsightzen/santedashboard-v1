@@ -38,16 +38,21 @@
             </el-table-column>
              <el-table-column  prop="stressrisk" :label="$t('patienttable.stressrisk')">
             </el-table-column>
+             <el-table-column  prop="operation" :label="$t('patienttable.operation')">
+               <el-button type="primary" @click="sumbit">{{$t('patienttable.operation')}}</el-button>
+            </el-table-column>
       </el-table>
-	  <el-col :span="24" class="toolbar" style="background:#F9F9F9;">
-			<!-- <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
-			</el-pagination> -->
-		</el-col>
+	  <!-- <el-col :span="24" class="toolbar" style="background:#F9F9F9;">
+			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+			</el-pagination>
+		</el-col> -->
+     <quesnaireDetails v-if="quesDialog" ref="quesnaireDetails" ></quesnaireDetails>
 	</section>
 </template>
 
 <script>
-	import util from '../common/js/util'
+  import util from '../common/js/util'
+  import quesnaireDetails from "@/components/quesnaireDetails";
 	//import NProgress from 'nprogress'
 	// import {getDrugList} from '../api/api';
 	// import Pagination from '@/components/Pagination'
@@ -55,6 +60,7 @@
 		name:"patientList",
 		  // 注册组件
 		components: {
+      quesnaireDetails
 		  // Pagination
 		},
 		data() {
@@ -65,13 +71,14 @@
 				users: [],
 				drugData:[],
 				total: 0,
-				page: 1,
+        page: 1,
+        quesDialog:false,
 				listLoading: false,
 				currentPage: 4,
 				sels: [],//列表选中列
 				editLoading: false,
 				addLoading: false,
-				   formInline: {
+				  formInline: {
 					page: 1,
 					limit: 10,
 					varLable: '',
@@ -89,7 +96,7 @@
 		 * 创建完毕
 		 */
 		created() {
-			// this.getdata(this.formInline)
+			 this.getdata(this.formInline)
 		},
 		methods: {
 			    // 获取公司列表
@@ -109,7 +116,7 @@
             deptId: 2,
             deptName: '上海分公司',
             deptNo: '1',
-            parentId: 1
+            stressrisk: 1
           },
           {
             age: 43,
@@ -119,7 +126,7 @@
             deptId: 3,
             deptName: '上海测试',
             deptNo: '02',
-            parentId: 1
+            stressrisk: 1
           },
           {
             age: 34,
@@ -129,7 +136,7 @@
             deptId: 12,
             deptName: '1',
             deptNo: '11',
-            parentId: 1
+            stressrisk: 1
           },
           {
             age: 76,
@@ -139,7 +146,7 @@
             deptId: 13,
             deptName: '5',
             deptNo: '5',
-            parentId: 1
+            stressrisk: 1
           },
           {
             age: 67,
@@ -149,12 +156,12 @@
             deptId: 17,
             deptName: 'v',
             deptNo: 'v',
-            parentId: 1
+            stressrisk: 1
           }
         ]
       }
       this.loading = false
-      this.listData = res.data
+      this.drugData = res.data
       // 分页赋值
       this.pageparm.currentPage = this.formInline.page
       this.pageparm.pageSize = this.formInline.limit
@@ -193,7 +200,7 @@
     },
 		// 更改表头样式
 		tableHeaderColor ({ row, column, rowIndex, columnIndex }) {
-		if (rowIndex === 0) {
+		if (rowIndex === 0) {//background: #3D57AA
 			return 'border-bottom: 1px solid #ebeef5;background: #3D57AA;border: 1px solid #fff;color: white;font-weight: normal;'
 		}
 		},
@@ -212,8 +219,12 @@
 				});
        },
 		mounted() {
-			this.getDrugInfo();
-		}
+			//this.getDrugInfo();
+    },
+    sumbit: function(index, row) {
+      debugger;
+       this.quesDialog=true;
+    }
 	}
 }
 </script>
@@ -242,10 +253,9 @@
 	text-align:left;
 	margin-left:10px;
   }
-  .btn-search{background: #3D57AA}
+ .btn-search{background: rgb(91, 135, 177)}
 .table-head-cell{
 	border-bottom: 1px solid #ebeef5;
-    background: #3D57AA;
     border: 1px solid #fff;
     color: white;
     font-weight: normal;}

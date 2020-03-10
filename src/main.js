@@ -32,6 +32,16 @@ const i18n = new VueI18n({
       'en': require('./common/lang/en')    // 英文语言包
     }
 })
+
+import highcharts from 'highcharts'
+import VueHighCharts from 'vue-highcharts'
+import highcharts3d from 'highcharts/highcharts-3d'
+highcharts3d(highcharts)
+
+import Pagination from 'vue-pagination'
+
+Vue.use(Pagination);
+
 Vue.config.productionTip = false
 
 // 路由拦截器

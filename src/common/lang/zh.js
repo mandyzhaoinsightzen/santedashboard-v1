@@ -14,6 +14,8 @@ module.exports = {
     scoredistribution:'分数分布',
     generalhealth:'总体健康状况',
     digestion:'消化状况',
+    mental:'精神状况',
+    sleep:'睡眠情况',
     genderdistribtn:"男女比例",
     agedistribtn:"年龄分布",
     assessmentdistribtn:"评估分布",
@@ -50,7 +52,8 @@ module.exports = {
       stressassessments:"压力评估",
       healthyassessments:"健康评估",
       healthrisk:"健康风险(百分比)",
-      stressrisk:"压力风险(百分比)"
+      stressrisk:"压力风险(百分比)",
+      operation:"操作"
     },
     vauchercodetable:{
       codes:"编号",
@@ -61,5 +64,8 @@ module.exports = {
       used:"已使用",
       expired:"过期",
       generate:"重新生成"
+     },
+     quesnaireDetails:{
+       overallscore:"Overall Score"
      }
 };
