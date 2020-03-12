@@ -5,9 +5,9 @@
       <header class="layui-elip">{{$t('language.dashborad')}}</header>
     </div>
     <el-form
-      :model="ruleForm2"
-      :rules="rules2"
-      ref="ruleForm2"
+      :model="ruleForm"
+      :rules="rules"
+      ref="ruleForm"
       label-position="left"
       label-width="0px"
       class="demo-ruleForm login-container"
@@ -16,17 +16,17 @@
       <h4>{{$t('loginpage.logincontinue')}}</h4>
       <el-form-item prop="account">
         <div class="form-dis">{{$t('loginpage.account')}}</div>
-        <el-input type="text" v-model="ruleForm2.account" auto-complete="off" class="input-vl"></el-input>
+        <el-input type="text" v-model="ruleForm.account" auto-complete="off" class="input-vl"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <div class="form-dis">{{$t('loginpage.password')}}</div>
-        <el-input type="password" v-model="ruleForm2.password" auto-complete="off" class="input-vl"></el-input>
+        <el-input type="password" v-model="ruleForm.password" auto-complete="off" class="input-vl"></el-input>
       </el-form-item>
       <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
       <el-form-item class="login-el-btn">
         <el-button
           type="primary"
-          @click.native.prevent="handleSubmit2"
+          @click.native.prevent="handleSubmit"
           :loading="logining"
           class="login-btn"
         >{{$t('loginpage.login')}}</el-button>
@@ -57,23 +57,23 @@
 </template>
 
 <script>
-import { verifyLogin } from "../api/api";
+import { login } from "../api/api";
 export default {
   data() {
     return {
       logining: false,
       imgurl: require("./../assets/images/english.png"),
-      ruleForm2: {
-        account: "user",
-        password: "User2019"
+      ruleForm: {
+        account: "root",
+        password: "root@123"
       },
       userInfo: [
         {
-          account: "user",
-          password: "User2019"
+          account: "root",
+          password: "root@123"
         }
       ],
-      rules2: {
+      rules: {
         account: [
           { required: true, message: "请输入账号", trigger: "blur" }
           //{ validator: validaePass }
@@ -100,31 +100,40 @@ export default {
       }
     },
     handleReset2() {
-      this.$refs.ruleForm2.resetFields();
+      this.$refs.ruleForm.resetFields();
     },
-    handleSubmit2(ev) {
+    handleSubmit(ev) {
       var _this = this;
-      this.$refs.ruleForm2.validate(valid => {
+      this.$refs.ruleForm.validate(valid => {
         if (valid) {
-          //           var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.password };
-          //            verifyLogin(loginParams).then(data => {
-          //              if(data.msg=="login success"){
-          //              this.logining = true;
-          //              var user=[{name: this.ruleForm2.account,password: this.ruleForm2.password}];
-          //              sessionStorage.setItem('user', JSON.stringify(user));
-          //              this.$router.push({ path: '/Index' });
-          //              }else{
-          //              this.logining = false;
-          //              this.$message({
-          //							message: '登录失败，请重新登录！',
-          //							type: 'error'
-          //            });
-          //              }
-          //            });
-          sessionStorage.setItem("user", JSON.stringify(this.userInfo));
-          setTimeout(() => {
-            this.$router.push({ name: "index" });
-          }, 1000);
+                    var loginParams = { username: this.ruleForm.account, password: this.ruleForm.password };
+                     login(loginParams).then(res => {
+                       debugger;
+                       if(res.status=="ok"){
+                       this.logining = true;
+                       var user=[{name: this.ruleForm.account,password: this.ruleForm.password}];
+                       sessionStorage.setItem('user', JSON.stringify(user));
+                       sessionStorage.setItem('authorization',res.access);
+                      
+                       this.$router.push({ path: '/index' });
+                       }
+                       else{
+                       this.logining = false;
+                       this.$message({
+          							message: 'failure！',
+          							type: 'error'
+                       });
+                       }
+                     }).catch(error=>{
+                         this.$message({
+          							 message: 'failure！',
+          							type: 'error'
+                       });
+                    });
+                    // sessionStorage.setItem("user", JSON.stringify(this.userInfo));
+                    // setTimeout(() => {
+                    //   this.$router.push({ name: "index" });
+                    // }, 1000);
         } else {
           console.log("登录失败!");
           return false;

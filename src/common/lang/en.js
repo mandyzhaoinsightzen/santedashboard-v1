@@ -66,5 +66,9 @@ vauchercodetable:{
  generate:"Generate New"
 },quesnaireDetails:{
   overallscore:"总分"
+},
+prompt:{
+loginFail:"Login failed",
+loginsuss:"Login successful!"
 }
 };

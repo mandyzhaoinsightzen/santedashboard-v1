@@ -66,6 +66,10 @@ module.exports = {
       generate:"重新生成"
      },
      quesnaireDetails:{
-       overallscore:"Overall Score"
-     }
+      overallscore:"总分"
+    },
+    prompt:{
+      loginFail:"登录失败!",
+      loginsuss:"登录成功!"
+      }
 };

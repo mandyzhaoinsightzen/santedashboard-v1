@@ -6,7 +6,7 @@ const loginreq = (method, url, params) => {
         method: method,
         url: url,
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
         },
         data:JSON.stringify(params),
         traditional: true,
@@ -43,13 +43,19 @@ function getCookie(key){
 // 通用公用方法
 const req = (method, url, params) => {
     let xctoken=getCookie("csrftoken");
+    let authorization=sessionStorage.getItem("authorization");
+    let auth=null;
+    if(authorization!=null){
+     auth="Bearer "+authorization;
+    }
     return axios({
         method: method,
         url: url,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            // token: localStorage.getItem('logintoken')
-            'X-CSRFToken':xctoken
+            //'Content-Type': 'application/json',
+            'X-CSRFToken':xctoken,
+            'Authorization':auth
         },
         data: params,
         traditional: true,

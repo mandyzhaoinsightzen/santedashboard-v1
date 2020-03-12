@@ -4,13 +4,13 @@
 <template>
   <div class="container">
     <div class="main">
-      <h3>用户管理</h3>
+      <h3>User Management</h3>
       <!-- 搜索筛选 -->
-      <el-form :inline="true" :model="formInline" class="user-search">
-        <el-form-item label="用户名:">
-          <el-input v-model="formInline.username" placeholder="请输入用户名"></el-input>
+      <el-form :inline="true" :model="formInline" class="search">
+        <el-form-item label="Account:">
+          <el-input v-model="formInline.username" placeholder="Account"></el-input>
         </el-form-item>
-        <el-form-item label="角色:">
+        <!-- <el-form-item label="角色:">
           <el-select v-model="formInline.role" placeholder="请选择角色名">
             <el-option
               v-for="item in roleData"
@@ -19,15 +19,15 @@
               :value="item.name"
             ></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button
             type="primary"
             icon="el-icon-search"
             @click="search"
             class="btnstyle marginRight10"
-          >查询</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">新增</el-button>
+          >Search</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">New</el-button>
         </el-form-item>
       </el-form>
       <!--列表-->
@@ -37,12 +37,14 @@
         highlight-current-row
         v-loading="loading"
         border
-        element-loading-text="拼命加载中"
+        element-loading-text="loading"
         class="userTable"
       >
-        <el-table-column align="center" sortable prop="username" label="用户名" width="300"></el-table-column>
-        <el-table-column align="center" sortable prop="role" label="角色" width="250"></el-table-column>
-        <el-table-column align="center" sortable prop="c_time" label="时间" width="300"></el-table-column>
+        <el-table-column align="center" sortable prop="code" label="Code" width="300"></el-table-column>
+        <el-table-column align="center" sortable prop="username" label="Account" width="300"></el-table-column>
+        <el-table-column align="center" sortable prop="company_name" label="Organization" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="role" label="Role Type" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="c_time" label="Create Date" width="300"></el-table-column>
         <!-- <el-table-column align="center" sortable prop="is_active" label="状态" min-width="150">
           <template slot-scope="scope">
             <div
@@ -50,7 +52,7 @@
             >{{ scope.row.is_activeSt }}</div>
           </template>
         </el-table-column> -->
-        <el-table-column label="操作" min-width="150" align="center">
+        <el-table-column label="Operation" min-width="150" align="center">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.is_active==true?nshow:fshow"
@@ -70,63 +72,50 @@
         width="30%"
       >
         <el-form
-          label-width="80px"
+          label-width="100px"
           ref="editForm"
           :model="editForm"
           :rules="rules"
           style="margin-left:30px;" @click="closeDialog('edit')"
         >
-          <el-form-item label="用户名" prop="userName">
+          <el-form-item label="Account" prop="Account">
             <el-input
-              v-model="editForm.userName"
+              v-model="editForm.username"
               auto-complete="off"
-              placeholder="请输入用户名"
+              placeholder="Account"
               width="80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="pwd">
-            <el-input
-              v-model="editForm.pwd"
-              show-password
+          <el-form-item label="Organization" prop="Organization">
+            <!-- <el-input
+              v-model="editForm.company_code"
               auto-complete="off"
-              placeholder="请输入密码"
+              placeholder="Organization"
               @input="change($event)"
-            ></el-input>
+            ></el-input> -->
+              <el-select v-model="editForm.company_code" placeholder="Organization">
+
+              </el-select>
           </el-form-item>
-          <el-form-item label="确认密码" prop="rePassword">
-            <el-input
-              v-model="editForm.rePassword"
-              show-password
-              auto-complete="off"
-              placeholder="请输入确认密码"
-              @input="change($event)"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="角色" prop="roleId">
-            <el-select v-model="editForm.roleId" placeholder="请选择">
-              <el-option
+          <el-form-item label="Role Type" prop="Role Type">
+            <el-select v-model="editForm.role" placeholder="Role Type">
+              <!-- <el-option
                 v-for="item in roleData"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="状态" prop="isActive">
-            <el-select v-model="editForm.isActive" placeholder="请选择">
-              <el-option label="启用" value="true"></el-option>
-              <el-option label="禁用" value="false"></el-option>
+              ></el-option> -->
             </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button  @click="closeDialog()">取消</el-button>
+          <el-button  @click="closeDialog()">Cancel</el-button>
           <el-button
             type="primary"
             :loading="loading"
             class="title btnstyle"
             @click="submitForm('editForm')"
-          >保存</el-button>
+          >Save</el-button>
         </div>
       </el-dialog>
     </div>
@@ -135,78 +124,40 @@
 
 <script>
 // 导入请求方法
-// import {
-//   userList,
-//   getRoleListName,
-//   userSave,
-//   userLock
-// } from '../../api/system'
+import {
+  staffList,
+  staffAdd,
+  staffDelete,
+} from '../api/api'
 import Pagination from "../components/Pagination";
 export default {
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (value) {
-        if (this.editForm.pwd !== value) {
-          callback(new Error("两次输入的密码不一致"));
-        } else {
-          callback();
-        }
-      } else {
-        callback(new Error("请输入确认密码"));
-      }
-    };
     return {
       nshow: true, //switch开启
       fshow: false, //switch关闭
       loading: false, //是显示加载
       title: "添加用户",
       editFormVisible: false, //控制编辑页面显示与隐藏
-      dataAccessshow: false, //控制数据权限显示与隐藏
-      unitAccessshow: false, //控制所属单位隐藏与显示
       // 编辑与添加
       editForm: {
-        userName: "",
-        roleId: "",
-        pwd: "",
-        isActive: ""
+        username: "",
+        role: "",
+        company_code: "",
       },
-      // 选择数据
-      selectdata: [],
       // rules表单验证
       rules: {
-        userName: [
+        username: [
           {
             required: true,
-            message: "请输入用户名(5-18位-大写/小写字母/数字)",
+            message: "username",
             trigger: "blur",
-            pattern: /^[a-zA-Z0-9]\w{4,18}$/
           }
         ],
-        pwd: [
-          {
-            required: true,
-            message: "请输入密码(6-24位-字母/数字!@#)",
-            trigger: "blur",
-            pattern: /^[\w!@#$]{6,24}$/
-          }
-        ],
-        rePassword: [
-          { required: true, validator: validatePass, trigger: "blur" }
-        ],
-        roleId: [{ required: true, message: "请选择角色", trigger: "blur" }],
-        isActive: [{ required: true, message: "请选择状态", trigger: "blur" }]
-      },
-      // 删除用户
-      seletedata: {
-        ids: ""
-      },
-      // 重置密码
-      resetpsd: {
-        userId: ""
+        // roleId: [{ required: true, message: "Role Type", trigger: "blur" }],
       },
       // 请求数据参数
       formInline: {
-        current_page: 1,
+        page: 1,
         page_size: 10,
         username: "",
         role: ""
@@ -214,10 +165,6 @@ export default {
       //用户数据
       userData: [],
       roleData: [],
-      // 选中
-      checkmenu: [],
-      //参数role
-      saveroleId: "",
       // 分页参数
       pageparm: {
         currentPage: 1,
@@ -272,55 +219,34 @@ export default {
       //   })
     },
     // 获取数据方法
-
-    getdata(parameter) {
+   getdata(parameter) {
       this.loading = true;
-      let userDataList = [];
-      // 获取用户列表
-      //   userList(parameter).then(res => {
-      //     this.loading = false
-      //     if (res.code == 200) {
-      //       var datas=res.data.page_data;
-      //       datas.forEach(function(data, index) {
-      //       const userArr = {
-      //         "c_time": data.c_time,
-      //         "is_activeSt": data.is_active==true?"正常":"失效",
-      //         "is_active": data.is_active,
-      //          "role": data.role,
-      //          "username": data.username
-      //       }
-      //       userDataList.push(userArr);
-      //      });
-      //       this.userData =userDataList;
-      //       // 分页赋值
-      //       this.pageparm.currentPage = this.formInline.current_page;
-      //       this.pageparm.pageSize = this.formInline.page_size;
-      //       this.pageparm.total = res.data.total;
-      //     }else if (res.code==2002){
-      //           //跳转到登录
-      //           this.$store.commit('logout', 'false')
-      //           this.$router.push({ path: '/login' })
-      //           this.$message({
-      //                type: 'info',
-      //                message: "登录超时,请重新登录"
-      //               })
-      //       }else{
-      //           this.$message({
-      //               type: 'info',
-      //               message: res.msg
-      //           })
-      //       }
-      // })
-      let userArr = [
-        {
-          c_time: "",
-          is_activeSt:"正常",
-          is_active: true,
-          role: 2,
-          username: "test"
-        }
-      ];
-      this.userData = userArr;
+      let dataList = [];
+      staffList(parameter).then(res => {
+            this.loading = false;
+            var datas=res.results;
+            datas.forEach(function(data, index) {
+            const arr = {
+              "username": data.username,
+              "is_activeSt": data.is_active==true?"正常":"失效",
+              "role": data.role,
+              "company_name": data.company_name,
+              "created_on": data.created_on
+            }
+            dataList.push(arr);
+            });
+            this.userData =dataList;
+            // 分页赋值
+            this.pageparm.currentPage = this.formInline.page;
+            this.pageparm.pageSize = this.formInline.page_size;
+            this.pageparm.total = res.results.count;
+      }).catch(error=>{
+                       debugger;
+                         this.$message({
+          							 message: error,
+          							type: 'error'
+                       });
+           });
     },
     // 分页插件事件
     callFather(parm) {
@@ -330,7 +256,7 @@ export default {
     },
     //搜索事件
     search() {
-      this.formInline.current_page = 1;
+      this.formInline.page = 1;
       this.getdata(this.formInline);
     },
     // 修改type
@@ -377,56 +303,68 @@ export default {
       this.editFormVisible = true;
       if (row != undefined && row != "undefined") {
         this.title = "修改用户";
-        this.editForm.userName = row.userName;
-        this.editForm.pwd = row.password;
-        this.editForm.roleId = row.roleId;
-        this.editForm.isActive = row.isActive;
+        this.editForm.username = row.username;
+        this.editForm.company_code = row.company_code;
+        this.editForm.role = row.roleId;
       } else {
         this.title = "添加用户";
-        this.editForm.userName = "";
-        this.editForm.pwd = "";
+        this.editForm.username = "";
+        this.editForm.company_code = "";
         this.editForm.roleId = "";
-        this.editForm.isActive = "";
       }
     },
     // 编辑、添加提交方法
-    submitForm(editData) {
+     submitForm(editData) {
+      debugger;
       this.$refs[editData].validate(valid => {
         if (valid) {
-          var params = {
-            username: this.editForm.userName,
-            password: this.editForm.pwd,
-            role: this.editForm.roleId,
-            is_active: this.editForm.isActive
-          };
-          // 请求方法
-          //   userSave(params)
-          //     .then(res => {
-          //       this.editFormVisible = false
-          //       this.loading = false
-          //       if (res.code==200) {
-          //         this.getdata(this.formInline)
-          //         this.$message({
-          //           type: 'success',
-          //           message: '保存成功！'
-          //         })
-          //       } else if (res.code==2002){
-          //         //跳转到登录
-          //         this.$store.commit('logout', 'false')
-          //         this.$router.push({ path: '/login' })
-          //         this.$message({
-          //             type: 'info',
-          //             message: "登录超时,请重新登录"
-          //             })
-          //       }else{
-          //           this.$message({
-          //               type: 'info',
-          //               message: res.msg
-          //           })
-          //       }
-          //     })
+         if (this.isAdd) {
+          staffAdd(this.editForm).then(res => {
+            // if(res.status=="fail"){
+            //   if(res.code==2011){
+            //      this.$message({
+          	// 				message: "wrong phone number!",
+          	// 				type: 'error'
+            //         });
+            //   }else{
+            //      this.$message({
+          	// 				message: "failure!",
+          	// 				type: 'error'
+            //         });
+            //   }
+            // }else{
+              this.editFormVisible = false
+              this.loading = false
+              this.getdata(this.formInline)
+                this.$message({
+                  type: 'success',
+                  message: 'success!'
+                })
+            // }
+            }).catch(error=>{
+               this.$message({
+          					message: "failure!",
+          					type: 'error'
+                    });
+           });
+          }else{
+             staffEdit(this.editForm).then(res => {
+                this.editFormVisible = false
+                this.loading = false
+                this.getdata(this.formInline)
+                this.$message({
+                  type: 'success',
+                  message: 'success!'
+                })
+            }).catch(error=>{
+               this.$message({
+          					message: "failure!",
+          					type: 'error'
+                    });
+           });
+          }
         }
-      });
+      })
     },
     handleClick(data, checked, node) {
       if (checked) {
@@ -528,9 +466,12 @@ export default {
     position: inherit;
     padding-top: 10%;
 }
+.search{
+  text-align: left;
+}
 .main h3{text-align:left;margin: 20px 0px 50px 0px;}
 .btnstyle {
-  background: #5aa3e6;
+  background: #004B87;
   color: white;
 }
 .el-form-item .el-select {
