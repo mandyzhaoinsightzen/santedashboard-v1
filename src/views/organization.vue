@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div class="main">
-      <h3>Organization Management</h3>
+      <h3>{{$t('menu.orgmanage')}}</h3>
       <!-- 搜索筛选 -->
       <el-form :inline="true" :model="formInline" class="search">
-        <el-form-item label="Name:">
-          <el-input v-model="formInline.name" placeholder="Name"></el-input>
+        <el-form-item>
+          <el-input v-model="formInline.name" :placeholder="$t('datatable.name')" class="wdh-search"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button
@@ -13,8 +13,8 @@
             icon="el-icon-search"
             @click="orgSearch"
             class="btnstyle marginRight10"
-          >Search</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">New</el-button>
+          >{{$t("operation.search")}}</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">{{$t("operation.new")}}</el-button>
         </el-form-item>
       </el-form>
       <!--列表-->
@@ -26,12 +26,12 @@
         element-loading-text="loading"
         class="userTable"
       >
-        <el-table-column align="center" sortable prop="code" label="Code" width="100"></el-table-column>
-        <el-table-column align="center" sortable prop="name" label="Orgnization Name" width="200"></el-table-column>
-        <el-table-column align="center" sortable prop="type" label="Orgnization Type" width="200"></el-table-column>
-        <el-table-column align="center" sortable prop="address" label="Address" width="200"></el-table-column>
-        <el-table-column align="center" sortable prop="phone_no" label="Phone No" width="200"></el-table-column>
-        <el-table-column align="center" sortable prop="created_on" label="Create Date" width="200" :formatter="formatDate"></el-table-column>
+        <el-table-column align="center" sortable prop="code" :label="$t('datatable.code')" width="150"></el-table-column>
+        <el-table-column align="center" sortable prop="name" :label="$t('datatable.organizationname')" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="type" :label="$t('datatable.type')"  width="200"></el-table-column>
+        <el-table-column align="center" sortable prop="address" :label="$t('datatable.address')" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="phone_no" :label="$t('datatable.phoneno')" width="200"></el-table-column>
+        <el-table-column align="center" sortable prop="created_on" :label="$t('datatable.createdate')" width="200" :formatter="formatDate"></el-table-column>
         
         <!-- <el-table-column align="center" sortable prop="is_active" label="状态" min-width="150">
           <template slot-scope="scope">
@@ -40,9 +40,9 @@
             >{{ scope.row.is_activeSt }}</div>
           </template>
         </el-table-column> -->
-        <el-table-column label="Operation" min-width="150" align="center">
+        <el-table-column :label="$t('datatable.operation')" min-width="150" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" class="btnstyle">Edit</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)" class="btnstyle">{{$t("datatable.operation")}}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,7 +50,7 @@
       <Pagination v-bind:child-msg="pageparm" @callFather="callFather" class="pagtn"></Pagination>
       <!-- 编辑界面 -->
       <el-dialog
-        :title="title"
+        :title="isAdd==true?$t('datatable.createorg'):$t('datatable.editorg')" 
         :visible.sync="editFormVisible"
         width="30%"
       >
@@ -61,42 +61,42 @@
           :rules="rules"
           style="margin-left:30px;" @click="closeDialog('edit')"
         >
-          <el-form-item label="Name" prop="name">
+          <el-form-item :label="$t('datatable.organization')" :prop="$t('datatable.organization')">
             <el-input
               v-model="editForm.name"
-              placeholder="Name"
+              :placeholder="$t('datatable.organization')"
               width="80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Type" prop="type">
-             <el-select v-model="editForm.type" placeholder="please select">
+          <el-form-item :label="$t('datatable.type')" :prop="$t('datatable.type')">
+             <el-select v-model="editForm.type" :placeholder="$t('datatable.type')">
                     <el-option  v-for="item in orgTypeData"  :key="item.id" :label="item.name"  :value="item.id" >
                     </el-option>
              </el-select>
           </el-form-item>
-          <el-form-item label="Address" prop="address">
+          <el-form-item :label="$t('datatable.address')" :prop="$t('datatable.address')">
             <el-input
               v-model="editForm.address"
-              placeholder="address"
+              :placeholder="$t('datatable.address')"
               width="80%"
             ></el-input>
           </el-form-item>
-           <el-form-item label="phone_no" prop="phone_no">
+           <el-form-item :label="$t('datatable.phoneno')" :prop="$t('datatable.phoneno')">
             <el-input
               v-model="editForm.phone_no"
-              placeholder="phone_no" 
+              :placeholder="$t('datatable.phoneno')"
               width="80%"  
             ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button  @click="closeDialog()">Cancle</el-button>
+          <el-button  @click="closeDialog()">{{$t("operation.cancel")}}</el-button>
           <el-button
             type="primary"
             :loading="loading"
             class="title btnstyle"
             @click="submitForm('editForm')"
-          >Save</el-button>
+          >{{$t("operation.save")}}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -110,7 +110,7 @@ import {
   orgList,
   orgAdd,
   orgEdit,
-  orgDelete
+  // orgDelete
 } from '../api/api'
 import Pagination from "../components/Pagination";
 export default {
@@ -206,13 +206,13 @@ export default {
         })
     },
     formatDate(row, column) {
-                // 获取单元格数据
-                let data = row[column.property]
-                if(data == null) {
-                    return null
-                }
-                let dt = new Date(data)
-                 return dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
+        // 获取单元格数据
+        let data = row[column.property]
+        if(data == null) {
+          return null
+        }
+        let dt = new Date(data)
+        return dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
     },
     // 获取数据方法
     getdata(parameter) {
@@ -315,7 +315,7 @@ export default {
     handleEdit: function(index, row) {
       this.editFormVisible = true;
       if (row != undefined && row != "undefined") {
-        this.title = "修改组织";
+        this.title = "Update Organization";
         this.isAdd=false;
         this.editForm.id=row.id;
         this.editForm.name = row.name;
@@ -323,7 +323,7 @@ export default {
         this.editForm.address = row.address;
         this.editForm.phone_no = row.phone_no;
       } else {
-        this.title = "添加组织";
+        this.title = "Create Organization";
         this.isAdd=true;
         this.editForm.name = "";
         this.editForm.type = "";
@@ -445,7 +445,6 @@ export default {
 
 <style scoped>
 .container {
-  text-align: center;
   overflow: hidden;
   margin: 0 auto;
   width: 80%;
@@ -459,17 +458,18 @@ export default {
 .search{
   text-align: left;
 }
+.el-form-item .el-select{
+    width: 80%;
+  }
+ .el-form-item .el-input{
+   width: 80%;
+ }
 .main h3{text-align:left;margin: 20px 0px 50px 0px;}
 .btnstyle {
   background: #004B87;
   color: white;
 }
-.el-form-item .el-select {
-  width: 80%;
-}
-.el-form-item .el-input {
-  width: 80%;
-}
+.wdh-search{min-width:250px;}
 .marginRight10 {
   margin-right: 10px;
 }

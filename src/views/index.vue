@@ -201,7 +201,30 @@ export default {
   mounted() {
     //钩子函数挂载时实例化这个图表
     // chart(参数1,参数2);第一个参数挂载组件的容器，第二个参数为图表所需要的数据对象
-    HighCharts.chart(this.id, this.dataObj);
+    //HighCharts.chart(this.id, this.dataObj);
+  },
+  created: function() {
+    //Patient Stats
+    //world map
+    //https://gallery.echartsjs.com/editor.html?c=map-world-dataRange
+    //https://gallery.echartsjs.com/editor.html?c=xBJh3XKctZ
+    //https://gallery.echartsjs.com/editor.html?c=xBy-GXsGLX
+    //https://gallery.echartsjs.com/editor.html?c=xHJQPGBz4b
+    //  this.$nextTick(function(){
+       this.$nextTick(function () {
+          this.drawGenderChart();
+          this.drawAgeChart();
+          this.drawAssChart();
+
+          this.scoreChart();
+          //this.digestionChart();
+
+          this.mentalChart();
+          this.sleepChart();
+          this.worldMap1();
+        });
+        //this.worldMap();
+      // })
   },
   methods: {
     percentageCalculate(number, total) {
@@ -276,7 +299,7 @@ export default {
           }
         ]
       };
-      this.chPie.setOption(option);
+      this.chPie.setOption(option, true);
     },
     drawAgeChart(data1) {
       var agePie = echarts.init(document.getElementById("age-pie-chart"));
@@ -348,12 +371,15 @@ export default {
           }
         ]
       };
-      agePie.setOption(option);
+      agePie.setOption(option, true);
     },
     drawAssChart(data1) {
-      var assessemtChart = echarts.init(
-        document.getElementById("assessemt-pie-chart")
-      );
+      // let div_= document.getElementById("assessemt-pie-chart");
+      // div_.removeAttribute("_echarts_instance_");
+      // var assessemtChart = echarts.init( div_ );
+      // var div_ = document.getElementById('assessemt-pie-chart').removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性
+      var assessemtChart = echarts.init( document.getElementById("assessemt-pie-chart") );
+      //var assessemtChart = echarts.init( div_ );
       var nameData = ["Health Assessment", "Stress Assessment"];
       var option = {
         animation: true,
@@ -414,13 +440,19 @@ export default {
             },
             //data: data1
             data: [
-              { value: 32, name: "" },
-              { value: 23, name: "" }
+              // { value: 32, name: "" },
+              // { value: 23, name: "" }
             ]
           }
         ]
       };
-      assessemtChart.setOption(option);
+     //刷新数据
+      let data= [ { value: 32, name: "" },
+               { value: 23, name: "" }]
+     
+      option.series[0].data = data;
+      assessemtChart.setOption(option);  
+      //assessemtChart.setOption(option, true);
     },
     scoreChart(data) {
       //https://gallery.echartsjs.com/editor.html?c=x7J3ZPveNK
@@ -557,7 +589,7 @@ export default {
         ]
       };
 
-      scoreChart.setOption(option);
+      scoreChart.setOption(option, true);
     },
     // digestionChart(value){
     // },
@@ -840,29 +872,10 @@ export default {
 
         series: series
     };
-    gChart.setOption(option);
+
+    gChart.setOption(option, true);
     }
-  },created: function() {
-    //Patient Stats
-    //world map
-    //https://gallery.echartsjs.com/editor.html?c=map-world-dataRange
-    //https://gallery.echartsjs.com/editor.html?c=xBJh3XKctZ
-    //https://gallery.echartsjs.com/editor.html?c=xBy-GXsGLX
-    //https://gallery.echartsjs.com/editor.html?c=xHJQPGBz4b
-  
-      this.drawGenderChart();
-      this.drawAgeChart();
-      this.drawAssChart();
-
-      this.scoreChart();
-      //this.digestionChart();
-
-      this.mentalChart();
-      this.sleepChart();
-      this.worldMap1();
-      //this.worldMap();
-  
-  }
+  },
 };
 </script>
 
@@ -916,7 +929,9 @@ export default {
   clear: both;
 }
 .pt-total {
-  padding: 50px 0px 20px 0px;
+  /* padding: 50px 0px 20px 0px; */
+  height: 80px;
+  line-height: 80px;
 }
 .pt-total .title-content {
   float: left;

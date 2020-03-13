@@ -4,11 +4,11 @@
 <template>
   <div class="container">
     <div class="main">
-      <h3>User Management</h3>
+      <h3>{{$t('menu.accountmanage')}}</h3>
       <!-- 搜索筛选 -->
       <el-form :inline="true" :model="formInline" class="search">
-        <el-form-item label="Account:">
-          <el-input v-model="formInline.username" placeholder="Account"></el-input>
+        <el-form-item >
+          <el-input v-model="formInline.username" :placeholder="$t('datatable.account')"  class="wdh-search"></el-input>
         </el-form-item>
         <!-- <el-form-item label="角色:">
           <el-select v-model="formInline.role" placeholder="请选择角色名">
@@ -26,8 +26,8 @@
             icon="el-icon-search"
             @click="search"
             class="btnstyle marginRight10"
-          >Search</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">New</el-button>
+          >{{$t("operation.search")}}</el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="handleEdit()" class="btnstyle">{{$t("operation.new")}}</el-button>
         </el-form-item>
       </el-form>
       <!--列表-->
@@ -40,19 +40,20 @@
         element-loading-text="loading"
         class="userTable"
       >
-        <el-table-column align="center" sortable prop="code" label="Code" width="300"></el-table-column>
-        <el-table-column align="center" sortable prop="username" label="Account" width="300"></el-table-column>
-        <el-table-column align="center" sortable prop="company_name" label="Organization" width="250"></el-table-column>
-        <el-table-column align="center" sortable prop="role" label="Role Type" width="250"></el-table-column>
-        <el-table-column align="center" sortable prop="c_time" label="Create Date" width="300"></el-table-column>
-        <!-- <el-table-column align="center" sortable prop="is_active" label="状态" min-width="150">
+        <el-table-column align="center" sortable prop="user" :label="$t('datatable.code')" width="100"></el-table-column>
+        <el-table-column align="center" sortable prop="username" :label="$t('datatable.account')" width="200"></el-table-column>
+        <el-table-column align="center" sortable prop="company_name" :label="$t('datatable.organization')" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="company_code"  width="250" v-if="false"></el-table-column>
+        <el-table-column align="center" sortable prop="role" :label="$t('datatable.roletype')" width="250"></el-table-column>
+        <el-table-column align="center" sortable prop="created_on" :label="$t('datatable.createdate')" width="150"  :formatter="formatDate"></el-table-column>
+        <el-table-column align="center" sortable prop="is_active" :label="$t('datatable.status')" min-width="150">
           <template slot-scope="scope">
             <div
               :style="{'color':scope.row.is_active==true? '#00C922':'#FF4646'}"
             >{{ scope.row.is_activeSt }}</div>
           </template>
-        </el-table-column> -->
-        <el-table-column label="Operation" min-width="150" align="center">
+        </el-table-column>
+        <el-table-column :label="$t('datatable.operation')" min-width="150" align="center">
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.is_active==true?nshow:fshow"
@@ -66,9 +67,9 @@
       <!-- 分页组件 -->
       <Pagination v-bind:child-msg="pageparm" @callFather="callFather" class="pagtn"></Pagination>
       <!-- 编辑界面 -->
-      <el-dialog
-        :title="title"
-        :visible.sync="editFormVisible"
+      <el-dialog 
+        :title="isAdd==true?$t('datatable.createaccount'):$t('datatable.editaccount')"
+        :visible.sync="editFormVisible" 
         width="30%"
       >
         <el-form
@@ -78,44 +79,43 @@
           :rules="rules"
           style="margin-left:30px;" @click="closeDialog('edit')"
         >
-          <el-form-item label="Account" prop="Account">
+          <el-form-item :label="$t('datatable.account')" :prop="$t('datatable.account')">
             <el-input
               v-model="editForm.username"
               auto-complete="off"
-              placeholder="Account"
+              :placeholder="$t('datatable.account')"
               width="80%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Organization" prop="Organization">
-            <!-- <el-input
-              v-model="editForm.company_code"
-              auto-complete="off"
-              placeholder="Organization"
-              @input="change($event)"
-            ></el-input> -->
-              <el-select v-model="editForm.company_code" placeholder="Organization">
-
+          <el-form-item :label="$t('datatable.organization')" :prop="$t('datatable.organization')">
+            <el-select v-model="editForm.company_code" :placeholder="$t('datatable.organization')" @change="selectChanged">
+                <el-option
+                  v-for="item in orgData"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code" 
+                ></el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="Role Type" prop="Role Type">
-            <el-select v-model="editForm.role" placeholder="Role Type">
-              <!-- <el-option
+          <el-form-item :label="$t('datatable.roletype')" :prop="$t('datatable.roletype')">
+            <el-select v-model="editForm.role" :placeholder="$t('datatable.roletype')">
+              <el-option
                 v-for="item in roleData"
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
-              ></el-option> -->
+              ></el-option>
             </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button  @click="closeDialog()">Cancel</el-button>
+          <el-button  @click="closeDialog()">{{$t("operation.cancel")}}</el-button>
           <el-button
             type="primary"
             :loading="loading"
             class="title btnstyle"
             @click="submitForm('editForm')"
-          >Save</el-button>
+          >{{$t("operation.save")}}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -127,6 +127,10 @@
 import {
   staffList,
   staffAdd,
+  orgList,
+  roleList,
+  getOrgTypeById,
+  staffStatus,
   staffDelete,
 } from '../api/api'
 import Pagination from "../components/Pagination";
@@ -136,7 +140,7 @@ export default {
       nshow: true, //switch开启
       fshow: false, //switch关闭
       loading: false, //是显示加载
-      title: "添加用户",
+      isAdd:true,
       editFormVisible: false, //控制编辑页面显示与隐藏
       // 编辑与添加
       editForm: {
@@ -164,6 +168,8 @@ export default {
       },
       //用户数据
       userData: [],
+      orgTypeId:'',
+      orgData:[],
       roleData: [],
       // 分页参数
       pageparm: {
@@ -187,8 +193,9 @@ export default {
    * 创建完毕
    */
   created() {
-    this.getRoleType();
     this.getdata(this.formInline);
+    let orgParams={name: "",page_size: 100000000, page:1}
+    this.getOrgName(orgParams);
   },
 
   /**
@@ -198,25 +205,37 @@ export default {
     change(e) {
       this.$forceUpdate();
     },
-    getRoleType() {
-      //   getRoleListName().then(res => {
-      //     if (res.code == '200') {
-      //       this.roleData=res.role_list;
-      //     }else if (res.code==2002){
-      //           //跳转到登录
-      //           this.$store.commit('logout', 'false')
-      //           this.$router.push({ path: '/login' })
-      //           this.$message({
-      //                type: 'info',
-      //                message: "登录超时,请重新登录"
-      //               })
-      //       }else{
-      //           this.$message({
-      //               type: 'info',
-      //               message: res.msg
-      //           })
-      //       }
-      //   })
+    getOrgName(params){
+      orgList(params).then(res=>{
+       this.orgData =res.results;
+      })
+    },
+    selectChanged(vId){
+      let obj = {};
+      obj = this.orgData.find((item)=>{
+      if(item.code === vId){
+        // 筛选出匹配数据
+      getOrgTypeById(item.id).then(res=>{
+        this.orgTypeId=res.type;
+      })
+      this.getRoleType(this.orgTypeId);
+       }
+      });
+    },
+    getRoleType(group) {
+      roleList(group).then(res=>{
+        this.roleData=[{id:res[0].id,name:res[0].name}];
+        this.editForm.role=res[0].name;
+      })
+    },
+    formatDate(row, column) {
+        // 获取单元格数据
+        let data = row[column.property]
+        if(data == null) {
+          return null
+        }
+        let dt = new Date(data)
+        return dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate() + ' ' + dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds()
     },
     // 获取数据方法
    getdata(parameter) {
@@ -226,10 +245,14 @@ export default {
             this.loading = false;
             var datas=res.results;
             datas.forEach(function(data, index) {
+            debugger;  
             const arr = {
+              "user":data.user,
               "username": data.username,
-              "is_activeSt": data.is_active==true?"正常":"失效",
+              "is_active":data.is_active,
+              "is_activeSt": data.is_active==true?"Normal":"Disabled",
               "role": data.role,
+              "company_code": data.company_code,
               "company_name": data.company_name,
               "created_on": data.created_on
             }
@@ -241,12 +264,11 @@ export default {
             this.pageparm.pageSize = this.formInline.page_size;
             this.pageparm.total = res.results.count;
       }).catch(error=>{
-                       debugger;
-                         this.$message({
-          							 message: error,
-          							type: 'error'
-                       });
-           });
+             this.$message({
+          			message: error,
+          			type: 'error'
+              });
+        });
     },
     // 分页插件事件
     callFather(parm) {
@@ -263,10 +285,9 @@ export default {
     editType: function(index, row) {
       this.loading = true;
       let parm = {
-        username: "",
+        user:row.user,
         is_active: ""
       };
-      parm.username = row.username;
       let active = row.is_activeSt;
       if (active == "失效") {
         parm.is_active = "true";
@@ -274,41 +295,27 @@ export default {
         parm.is_active = "false";
       }
       // 修改状态
-      //   userLock(parm).then(res => {
-      //     this.loading = false
-      //     if (res.code == 200) {
-      //       this.$message({
-      //         type: 'success',
-      //         message: '状态修改成功'
-      //       })
-      //       this.getdata(this.formInline)
-      //     } else if (res.code==2002){
-      //           //跳转到登录
-      //           this.$store.commit('logout', 'false')
-      //           this.$router.push({ path: '/login' })
-      //           this.$message({
-      //                type: 'info',
-      //                message: "登录超时,请重新登录"
-      //               })
-      //       }else{
-      //           this.$message({
-      //               type: 'info',
-      //               message: res.msg
-      //           })
-      //       }
-      //   })
+      staffStatus(parm).then(res => {
+        this.loading = false
+        this.$message({
+              type: 'success',
+              message: 'Change Success!'
+            })
+        this.getdata(this.formInline)
+        })
     },
     //显示编辑界面
     handleEdit: function(index, row) {
       this.editFormVisible = true;
       if (row != undefined && row != "undefined") {
-        this.title = "修改用户";
+        this.isAdd=false;
         this.editForm.username = row.username;
         this.editForm.company_code = row.company_code;
         this.editForm.role = row.roleId;
+        
       } else {
-        this.title = "添加用户";
         this.editForm.username = "";
+        this.isAdd=true;
         this.editForm.company_code = "";
         this.editForm.roleId = "";
       }
@@ -455,7 +462,6 @@ export default {
 
 <style scoped>
 .container {
-  text-align: center;
   overflow: hidden;
   margin: 0 auto;
   width: 80%;
@@ -470,16 +476,17 @@ export default {
   text-align: left;
 }
 .main h3{text-align:left;margin: 20px 0px 50px 0px;}
+.el-form-item .el-select{
+    width: 80%;
+  }
+ .el-form-item .el-input{
+   width: 80%;
+ }
 .btnstyle {
   background: #004B87;
   color: white;
 }
-.el-form-item .el-select {
-  width: 80%;
-}
-.el-form-item .el-input {
-  width: 80%;
-}
+
 .marginRight10 {
   margin-right: 10px;
 }

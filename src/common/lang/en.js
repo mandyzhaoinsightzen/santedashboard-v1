@@ -64,11 +64,52 @@ vauchercodetable:{
  used:"Used",
  expired:"Expired",
  generate:"Generate New"
-},quesnaireDetails:{
-  overallscore:"总分"
+},
+quesnaireDetails:{
+  overallscore:"verall Score"
 },
 prompt:{
 loginFail:"Login failed",
 loginsuss:"Login successful!"
-}
+},
+menu:{
+home:"Home",
+orgmanage:"Org Manage",
+accountmanage:"Account Manage",
+},
+datatable:{
+code:"Code",
+name:"Name",
+account:"Account",
+createaccount:"Create Account",
+editaccount:"Edit Account",
+createorg:"Create Organization",
+editorg:"Modify Organization",
+type:"Type",
+address:"Address",
+phone:"Phone",
+organizationname:"Organization Name",
+organizationtype:"Organization Type",
+phoneno:"Phone No",
+createdate:"Create Date",
+organization:"Organization",
+roletype:"Role Type",
+status:"Status",
+operation:"Operation"
+},
+operation:{
+search:"Search",
+new:"New",
+edit:"Edit",
+save:"Save",
+cancel:"Cancel"
+},
+el: {
+  pagination: {
+         goto: 'go',
+         pagesize: 'size/page',
+         total: ' {total} ',
+         pageClassifier: 'page'
+   }
+ }
 };

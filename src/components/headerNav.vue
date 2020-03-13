@@ -11,18 +11,18 @@
 				<div class="nael-right">
 					<ul class="nael-list">
 						<li>
-						<router-link to="/index" exact tag="li" activeClass="active">
-							<a>Home</a>
+						<router-link to="./index" exact tag="li" activeClass="active">
+							<a>{{$t('menu.home')}}</a>
 						</router-link>
 						</li>
 						<li>
 							<router-link to="/organization" exact tag="li" activeClass="active">
-										<a>Org Manage</a>
+										<a>{{$t('menu.orgmanage')}}</a>
 										</router-link>
 						</li>
 						<li>
 							<router-link to="/user" exact tag="li" activeClass="active">
-										<a>Accunt Manage</a>
+										<a>{{$t('menu.accountmanage')}}</a>
 										</router-link>
 						</li>
 					</ul>
@@ -54,7 +54,7 @@
 					<el-dropdown trigger="hover" class="el-dropdown-item"> 
 						<span class="el-dropdown-link userinfo-down" style="display: inline-flex;"> 
 								<img src="./../assets/images/userlogin.png"  height="35px" style="margin-top:20px"/>
-								<span >	{{sysUserName}}</span>
+								<span style="margin-top:-15px">	{{sysUserName}}</span>
 								<img  src="../assets/images/up.png" height="10px;" width="15px" style="margin-top: 35px;">
 						</span>
 						<el-dropdown-menu slot="dropdown" class="drp-show">
